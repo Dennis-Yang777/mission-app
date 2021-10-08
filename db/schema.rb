@@ -16,10 +16,10 @@ ActiveRecord::Schema.define(version: 2021_10_07_075015) do
   enable_extension "plpgsql"
 
   create_table "missions", force: :cascade do |t|
+    t.string "title", limit: 50
     t.text "content"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "title", limit: 50
   end
 
   create_table "users", force: :cascade do |t|
