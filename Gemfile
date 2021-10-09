@@ -29,15 +29,16 @@ gem 'jbuilder', '~> 2.7'
 gem 'bootsnap', '>= 1.4.4', require: false
 gem 'react-rails', '~> 2.6', '>= 2.6.1'
 gem 'rexml', '~> 3.2', '>= 3.2.5'
+gem 'devise', '~> 4.8'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'foreman', '~> 0.87.2'
   gem 'rspec-rails', '~> 5.0', '>= 5.0.2'
   gem 'rails-controller-testing', '~> 1.0', '>= 1.0.5'
   gem 'shoulda-matchers', '~> 5.0'
-  gem 'database_cleaner', '~> 2.0', '>= 2.0.1'
-  gem 'foreman', '~> 0.87.2'
   gem 'factory_bot_rails', '~> 6.2'
+  gem 'database_cleaner', '~> 2.0', '>= 2.0.1'
 end
 
 group :development do
