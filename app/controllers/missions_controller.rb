@@ -1,5 +1,5 @@
 class MissionsController < ApplicationController
-	before_action :authenticate_user!
+	before_action :authenticate_user!, except: %i[index]
 	before_action :find_author_mission, only: %i[show edit update destroy]
 
 	def index
