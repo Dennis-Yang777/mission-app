@@ -1,6 +1,5 @@
 <% missions.each do |mission| %>
 <tr>
-	<td>#</td>
 	<td><%= link_to mission.title, mission_path(mission) %></td>
 	<td><%= mission.content %></td>
 	<td>

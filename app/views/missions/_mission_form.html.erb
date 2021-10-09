@@ -1,9 +1,9 @@
 <div class="col-md-12">
-  <%= form_for mission do |f| %>
-    <%= f.text_field :title %>
-    <%= f.text_area :content %>
+  <%= simple_form_for mission do |f| %>
+    <%= f.input :title %>
+    <%= f.input :content %>
     <div class="form-actions">
-       <%= f.submit "Submit", disable_with: 'Submiting...', class: "btn btn-primary" %>
+       <%= f.submit "Submit", :disable_with => 'Submiting...', :class => "btn btn-primary"%>
     </div>
   <% end %>
 </div>
