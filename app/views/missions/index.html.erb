@@ -1,13 +1,13 @@
 <div class="col-md-12">
-  <h1>Welcome</h1>
+  <h1><%= t("Welcome") %></h1>
   <div class="mission d-flex">
-    <%= link_to "New mission", new_mission_path, class: "btn btn-primary ms-auto" %>
+    <%= link_to "#{t("New mission")}", new_mission_path, class: "btn btn-primary ms-auto" %>
   </div>
   <table class="table">
     <thead>
       <tr>
-        <td scope="col"> Title </td>
-        <td scope="col"> Content </td>
+        <td scope="col"> <%= t("Title") %> </td>
+        <td scope="col"> <%= t("Content") %> </td>
       </tr>
     </thead>
     <tbody>

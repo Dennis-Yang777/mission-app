@@ -6,8 +6,8 @@
 	</td>
 	<td><%= mission.content %></td>
 	<td>
-		<%= link_to "Edit", edit_mission_path(mission), class: "btn btn-xs" %>
-		<%= link_to "Delete", mission_path(mission), class: "btn btn-xs", method: 'delete', data: { confirm: "Are you sure?" }  %>
+		<%= link_to "#{t("Edit")}", edit_mission_path(mission), class: "btn btn-xs" %>
+		<%= link_to "#{t("Delete")}", mission_path(mission), class: "btn btn-xs", method: 'delete', data: { confirm: "Are you sure?" }  %>
 	</td>
 </tr>
 <% end %>

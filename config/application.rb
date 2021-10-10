@@ -13,6 +13,7 @@ module MissionApp
     config.generators.assets = false
     config.generators.helper = false
     config.time_zone = "Taipei"
+    config.i18n.default_locale = "zh-CN"
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
