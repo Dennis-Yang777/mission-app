@@ -40,6 +40,7 @@ group :development, :test do
   gem 'shoulda-matchers', '~> 5.0'
   gem 'factory_bot_rails', '~> 6.2'
   gem 'database_cleaner', '~> 2.0', '>= 2.0.1'
+  gem 'formulaic', '~> 0.4.1'
 end
 
 group :development do

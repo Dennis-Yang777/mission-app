@@ -1,35 +1,46 @@
 require "rails_helper"
 
-RSpec.feature "User authentication" do
-  scenario "existing user signs in" do
-    create(:user, email: "user@example.com", password: "password")
+RSpec.describe "User authentication" do
+  describe "user signs in" do	
+		before do
+			User.create(email: "user@example.com", password: "password")
+		end
 
-    visit "/users/sign_in"
+		it "good credentials" do
+			new_session_page.sign_in "user@example.com", "password"
+	
+			expect(page).to have_content "user@example.com"
+		end
 
-    within(".new_user") do
-      fill_in "Email", with: "user@example.com"
-      fill_in "Password", with: "password"
-    end
+		it "bad credentials" do
+			new_session_page.sign_in "XXX@example.com", "password"
 
-    click_button "Log in"
-
-    expect(page).to have_text "user@example.com"
+			expect(page).not_to have_text "user@example.com"
+		end
   end
 
-	scenario "user signs out" do
-		create(:user, email: "user@example.com", password: "password")
-		
-		visit "/users/sign_in"
-		
-		within(".new_user") do
-			fill_in "Email", with: "user@example.com"
-			fill_in "Password", with: "password"
-		end
-		
-		click_button "Log in"
-		
-		click_link "Logout"
+	describe "user signs out" do
+		it "sign_out the user" do
+			user = User.create(email: "user@example.com", password: "password")
+			new_session_page.sign_in "user@example.com", "password"
+			navbar.sign_out user.email
 
-		expect(page).not_to have_text "user@example.com"
+			expect(page).not_to have_text "user@example.com"
+		end
+
 	end
+
+	private
+		def home_page
+			PageObjects::Pages::Home.new
+		end
+
+		def navbar
+			PageObjects::Application::Navbar.new
+		end
+
+		def new_session_page
+			home_page.go
+			navbar.sign_in
+		end
 end
