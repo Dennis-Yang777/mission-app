@@ -3,24 +3,19 @@ require "rails_helper"
 RSpec.describe MissionsController do
   describe "GET index" do
     let(:user) { create(:user) }
-
-    before { sign_in user }
+    let(:mission1) { create(:mission, user: user) }
+    let(:mission2) { create(:mission, user: user) }
+    
+    before do
+      sign_in user 
+      get :index
+    end
 
     it "asign @missions" do
-      mission1 = create(:mission, user: user) 
-      mission2 = create(:mission, user: user)
-
-      get :index
-
       expect(assigns(:missions)).to eq([mission1, mission2]) 
     end
 
     it "render template" do
-      mission1 = create(:mission, user: user) 
-      mission2 = create(:mission, user: user)
-
-      get :index
-
       expect(response).to render_template("index")
     end
   end
@@ -80,13 +75,12 @@ RSpec.describe MissionsController do
       it "create a new mission record" do
         expect do
           post :create, params: { mission: attributes_for(:mission) }
-          # 帶入所有必要參數
         end.to change{ Mission.count }.by(1)
-        # 不好對內容，改對數量變化
       end
   
       it "redirects to mission_path" do
         post :create, params: { mission: attributes_for(:mission) }
+
         expect(response).to redirect_to missions_path
       end
 
@@ -133,9 +127,9 @@ RSpec.describe MissionsController do
     end
 
     context "signed in not as author" do
-      before { sign_in not_author }
-
       it "raise an error" do
+        sign_in not_author
+
         expect do
           get :edit, params: { id: mission.id }
         end.to raise_error ActiveRecord::RecordNotFound
@@ -151,7 +145,7 @@ RSpec.describe MissionsController do
 
     context "signed in as author" do
       before { sign_in author }
-
+      
       context "when mission have a title" do
         before do
           put :update, params: { id: mission.id,  mission: { title: "Eat lunch", content: "I want to eat lunch." }}
@@ -191,9 +185,9 @@ RSpec.describe MissionsController do
     end
 
     context "signed in not as author" do
-      before { sign_in not_author }
-
       it "raises an error" do
+        sign_in not_author
+
         expect do
           put :update, params: { id: mission.id,  mission: { title: "",content: "I want to eat lunch." }}
         end.to raise_error ActiveRecord::RecordNotFound
@@ -231,9 +225,9 @@ RSpec.describe MissionsController do
     end
 
     context "when sign in not as author" do
-      before { sign_in not_author }
-
       it "raises an error" do
+        sign_in not_author
+
         expect do
           delete :destroy, params: { id: mission.id }
         end.to raise_error ActiveRecord::RecordNotFound
