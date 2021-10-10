@@ -12,6 +12,7 @@ module MissionApp
     config.load_defaults 6.1
     config.generators.assets = false
     config.generators.helper = false
+    config.time_zone = "Taipei"
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files

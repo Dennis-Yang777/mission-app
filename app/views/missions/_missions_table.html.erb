@@ -1,6 +1,9 @@
 <% missions.each do |mission| %>
 <tr>
-	<td><%= link_to mission.title, mission_path(mission) %></td>
+	<td>
+		<%= link_to mission.title, mission_path(mission) %>
+		<%= mission.created_at %>
+	</td>
 	<td><%= mission.content %></td>
 	<td>
 		<%= link_to "Edit", edit_mission_path(mission), class: "btn btn-xs" %>
