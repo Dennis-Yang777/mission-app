@@ -2,86 +2,96 @@ require "rails_helper"
 
 RSpec.describe MissionsController do
   describe "GET index" do
-    it "asign @missions" do
-      mission1 = create(:mission) 
-      mission2 = create(:mission)
-      # 有做設定，不用加主詞(support裡面)
+    let(:user) { create(:user) }
+    let(:mission1) { create(:mission, user: user) }
+    let(:mission2) { create(:mission, user: user) }
+    
+    before do
+      sign_in user 
       get :index
+    end
 
+    it "asign @missions" do
       expect(assigns(:missions)).to eq([mission1, mission2]) 
-      # 回傳的物件(assigns)
     end
 
     it "render template" do
-      mission1 = create(:mission) 
-      mission2 = create(:mission)
-
-      get :index
-
       expect(response).to render_template("index")
-      # 回應(response)、渲染畫面(render_template)
     end
   end
 
   describe "GET show" do
-    it "assigns @mission" do
-      mission = create(:mission)
-
+    let(:user) { create(:user) }
+    let(:mission) { create(:mission, user: user) }
+    
+    before do
+      sign_in user
       get :show, params: { id: mission.id }
-      # 使用動詞加上要去的action，以及要帶入的params
+    end
+
+    it "assigns @mission" do
       expect(assigns(:mission)).to eq(mission)
     end
 
     it "render template" do
-      mission = create(:mission)
-
-      get :show, params: { id: mission.id }
-
       expect(response).to render_template("show")
     end
   end
 
   describe "GET new" do
-    it "assign @mission" do
-      mission = build(:mission)
-      # 要處於正在建立狀態
-      get :new
+    let(:user) { create(:user) } 
+    let(:mission) { build(:mission, user: user) } 
+  
+    context "when user login" do
+      before do
+        sign_in user
+        get :new
+      end
 
-      expect(assigns(:mission)).to be_a_new(Mission)
-      # 一個新實體be_a_new(Model)
+      it "assign @mission" do
+        expect(assigns(:mission)).to be_a_new(Mission)
+      end
+  
+      it "render template" do
+        expect(response).to render_template("new")
+      end
     end
 
-    it "render template" do
-      mission = build(:mission)
-
-      get :new
-
-      expect(response).to render_template("new")
+    context "when user logout" do
+      it "redirect_to new_user_session_path" do
+        get :new
+  
+        expect(response).to redirect_to new_user_session_path
+      end
     end
   end
 
   describe "POST create" do
-    context "when mission have a title" do
+    let(:user) { create(:user) } 
+    let(:mission) { build(:mission, user: user) }
+    before { sign_in user }
+
+    context "when mission has title" do
       it "create a new mission record" do
-        mission = build(:mission)
-  
         expect do
           post :create, params: { mission: attributes_for(:mission) }
-          # 帶入所有必要參數
         end.to change{ Mission.count }.by(1)
-        # 不好對內容，改對數量變化
       end
   
       it "redirects to mission_path" do
-        mission = build(:mission)
-  
         post :create, params: { mission: attributes_for(:mission) }
+
         expect(response).to redirect_to missions_path
-        # 轉址(redirect_to)
+      end
+
+      it "creates a mission for user" do
+        post :create, params: { mission: attributes_for(:mission) }
+  
+        expect(Mission.last.user).to eq(user)
       end
     end
 
-    context "when mission doesn't have a title" do
+    context "when mission doesn't have title" do
       it "can't create a new mission record" do
         expect do 
           post :create, params: { mission: { content: 'do your homework' }}
@@ -97,100 +107,131 @@ RSpec.describe MissionsController do
   end
 
   describe "GET edit" do
-    it "assign mission" do
-      mission = create(:mission)
+    let(:author) { create(:user) }
+    let(:not_author) { create(:user) }
+    let(:mission) { create(:mission, user: author) } 
 
-      get :edit, params: { id: mission.id }
+    context "signed in as author" do
+      before do
+        sign_in author
+        get :edit, params: { id: mission.id }
+      end
 
-      expect(assigns[:mission]).to eq(mission)
+      it "assign mission" do
+        expect(assigns[:mission]).to eq(mission)
+      end
+  
+      it "render template" do
+        expect(response).to render_template("edit")
+      end
     end
 
-    it "render template" do
-      mission = create(:mission)
+    context "signed in not as author" do
+      it "raise an error" do
+        sign_in not_author
 
-      get :edit, params: { id: mission.id }
-
-      expect(response).to render_template("edit")
+        expect do
+          get :edit, params: { id: mission.id }
+        end.to raise_error ActiveRecord::RecordNotFound
+      end
     end
+
   end
 
   describe "PUT update" do
-    context "when mission have a title" do
-      it "assign @mission" do
-        mission = create(:mission)
+    let(:author) { create(:user) }
+    let(:not_author) { create(:user) }
+    let(:mission) { create(:mission, user: author) } 
+
+    context "signed in as author" do
+      before { sign_in author }
+      
+      context "when mission have a title" do
+        before do
+          put :update, params: { id: mission.id,  mission: { title: "Eat lunch", content: "I want to eat lunch." }}
+        end
   
-        put :update, params: { id: mission.id,  mission: { title: "Eat lunch", content: "I want to eat lunch." }}
-  
-        expect(assigns[:mission]).to eq(mission)
+        it "assign @mission" do
+          expect(assigns[:mission]).to eq(mission)
+        end
+    
+        it "changes value" do
+          expect(assigns[:mission].title).to eq("Eat lunch")
+          expect(assigns[:mission].content).to eq("I want to eat lunch.")
+        end
+    
+        it "redirects to mission_path" do
+          expect(response).to redirect_to missions_path(mission)
+        end
       end
   
-      it "changes value" do
-        mission = create(:mission)
+      context "when mission have no title" do
+        before do
+          put :update, params: { id: mission.id,  mission: { title: "",content: "I want to eat lunch." }}
+        end
   
-        put :update, params: { id: mission.id,  mission: { title: "Eat lunch", content: "I want to eat lunch." }}
-  
-        expect(assigns[:mission].title).to eq("Eat lunch")
-        expect(assigns[:mission].content).to eq("I want to eat lunch.")
-      end
-  
-      it "redirects to mission_path" do
-        mission = create(:mission)
-  
-        put :update, params: { id: mission.id,  mission: { title: "Eat lunch", content: "I want to eat lunch." }}
-  
-        expect(response).to redirect_to missions_path(mission)
+        it "assign @mission" do
+          expect(assigns[:mission]).to eq(mission)
+        end
+    
+        it "changes value" do
+          expect(mission.content).not_to eq("I want to eat lunch.")
+        end
+    
+        it "redirects to mission_path" do
+          expect(response).to render_template("edit")
+        end
       end
     end
 
-    context "when mission have no title" do
-      it "assign @mission" do
-        mission = create(:mission)
-        
-        put :update, params: { id: mission.id,  mission: { title: "",content: "I want to eat lunch." }}
+    context "signed in not as author" do
+      it "raises an error" do
+        sign_in not_author
 
-        expect(assigns[:mission]).to eq(mission)
-      end
-  
-      it "changes value" do
-        mission = create(:mission)
-  
-        put :update, params: { id: mission.id,  mission: { title: "",content: "I want to eat lunch." }}
-
-        expect(mission.content).not_to eq("I want to eat lunch.")
-        # 不等於(not_to)
-      end
-  
-      it "redirects to mission_path" do
-        mission = create(:mission)
-  
-        put :update, params: { id: mission.id,  mission: { title: "",content: "I want to eat lunch." }}
-  
-        expect(response).to render_template("edit")
+        expect do
+          put :update, params: { id: mission.id,  mission: { title: "",content: "I want to eat lunch." }}
+        end.to raise_error ActiveRecord::RecordNotFound
       end
     end
   end
 
   describe "DELETE destroy" do
-    it "assigns @mission" do
-      mission = create(:mission)
+    let(:author) { create(:user) }
+    let(:not_author) { create(:user) }
+    let(:mission) { create(:mission, user: author) } 
 
-      delete :destroy, params: { id: mission.id }
+    context "when sign in as author" do
+      before { sign_in author }
 
-      expect(assigns[:mission]).to eq(mission)
+      it "assigns @mission" do
+        delete :destroy, params: { id: mission.id }
+  
+        expect(assigns[:mission]).to eq(mission)
+      end
+  
+      it "deletes a record" do
+        mission = create(:mission, user: author)
+  
+        expect do
+          delete :destroy, params: { id: mission.id }
+        end.to change { Mission.count }.by(-1)
+      end
+  
+      it "redirects to mission_path" do
+        delete :destroy, params: { id: mission.id }
+  
+        expect(response).to redirect_to missions_path
+      end
     end
 
-    it "deletes a record" do
-      mission = create(:mission)
+    context "when sign in not as author" do
+      it "raises an error" do
+        sign_in not_author
 
-      expect { delete :destroy, params: { id: mission.id }}.to change { Mission.count }.by(-1)
-    end
-
-    it "redirects to mission_path" do
-      mission = create(:mission)
-
-      delete :destroy, params: { id: mission.id }
-
-      expect(response).to redirect_to missions_path
+        expect do
+          delete :destroy, params: { id: mission.id }
+        end.to raise_error ActiveRecord::RecordNotFound
+      end
     end
   end
 end 

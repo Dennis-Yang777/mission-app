@@ -1,19 +1,20 @@
 class MissionsController < ApplicationController
-	before_action :find_mission, only: %i[show edit update destroy]
+	before_action :authenticate_user!, except: %i[index]
+	before_action :find_author_mission, only: %i[show edit update destroy]
 
 	def index
-		@missions = Mission.all
+		@missions = Mission.where(user_id: current_user)
 	end
 
 	def show
 	end
 
 	def new
-		@mission = Mission.new
+		@mission = current_user.missions.new
 	end
 
 	def create
-		@mission = Mission.new(mission_params)
+		@mission = current_user.missions.new(mission_params)
 		if @mission.save
 			redirect_to missions_path, notice: "新增成功"
 		else
@@ -41,7 +42,7 @@ class MissionsController < ApplicationController
 			params.require(:mission).permit(:title, :content)
 		end
 
-		def find_mission
-			@mission = Mission.find(params[:id])
+		def find_author_mission
+			@mission = current_user.missions.find(params[:id])
 		end
 end

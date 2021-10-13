@@ -66,6 +66,7 @@ GEM
     babel-transpiler (0.7.0)
       babel-source (>= 4.0, < 6)
       execjs (~> 2.0)
+    bcrypt (3.1.16)
     bindex (0.8.1)
     bootsnap (1.9.1)
       msgpack (~> 1.0)
@@ -89,6 +90,12 @@ GEM
       activerecord (>= 5.a)
       database_cleaner-core (~> 2.0.0)
     database_cleaner-core (2.0.1)
+    devise (4.8.0)
+      bcrypt (~> 3.0)
+      orm_adapter (~> 0.1)
+      railties (>= 4.1.0)
+      responders
+      warden (~> 1.2.3)
     diff-lcs (1.4.4)
     erubi (1.10.0)
     execjs (2.8.1)
@@ -99,6 +106,10 @@ GEM
       railties (>= 5.0.0)
     ffi (1.15.4)
     foreman (0.87.2)
+    formulaic (0.4.1)
+      activesupport
+      capybara
+      i18n
     globalid (0.5.2)
       activesupport (>= 5.0)
     i18n (1.8.10)
@@ -121,6 +132,7 @@ GEM
     nio4r (2.5.8)
     nokogiri (1.12.5-arm64-darwin)
       racc (~> 1.4)
+    orm_adapter (0.5.0)
     pg (1.2.3)
     public_suffix (4.0.6)
     puma (5.5.0)
@@ -172,6 +184,9 @@ GEM
       railties (>= 3.2)
       tilt
     regexp_parser (2.1.1)
+    responders (3.0.1)
+      actionpack (>= 5.0)
+      railties (>= 5.0)
     rexml (3.2.5)
     rspec-core (3.10.1)
       rspec-support (~> 3.10.0)
@@ -207,6 +222,9 @@ GEM
     semantic_range (3.0.0)
     shoulda-matchers (5.0.0)
       activesupport (>= 5.2.0)
+    simple_form (5.1.0)
+      actionpack (>= 5.2)
+      activemodel (>= 5.2)
     spring (3.0.0)
     sprockets (4.0.2)
       concurrent-ruby (~> 1.0)
@@ -222,6 +240,8 @@ GEM
     turbolinks-source (5.2.0)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
+    warden (1.2.9)
+      rack (>= 2.0.9)
     web-console (4.1.0)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
@@ -251,8 +271,10 @@ DEPENDENCIES
   byebug
   capybara (>= 3.26)
   database_cleaner (~> 2.0, >= 2.0.1)
+  devise (~> 4.8)
   factory_bot_rails (~> 6.2)
   foreman (~> 0.87.2)
+  formulaic (~> 0.4.1)
   jbuilder (~> 2.7)
   listen (~> 3.3)
   pg (~> 1.1)
@@ -265,6 +287,7 @@ DEPENDENCIES
   sass-rails (>= 6)
   selenium-webdriver
   shoulda-matchers (~> 5.0)
+  simple_form (~> 5.1)
   spring
   turbolinks (~> 5)
   tzinfo-data
