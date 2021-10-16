@@ -15,7 +15,7 @@ class MissionsController < ApplicationController
 
 	def create
 		@mission = current_user.missions.new(mission_params)
-		if @mission.start_time < @mission.end_time
+		if check_date
 			if @mission.save
 				redirect_to missions_path, notice: "新增成功"
 			else
@@ -31,7 +31,7 @@ class MissionsController < ApplicationController
 	end
 
 	def update
-		if mission_params[:start_time] < mission_params[:end_time]
+		if check_date
 			if @mission.update(mission_params)
 				redirect_to missions_path(@mission), notice: "修改成功"	
 			else
@@ -53,5 +53,11 @@ class MissionsController < ApplicationController
 
 		def find_author_mission
 			@mission = current_user.missions.find(params[:id])
+		end
+
+		def check_date
+			start_time = params.require(:mission).permit(:start_time).values.join
+			end_time = params.require(:mission).permit(:end_time).values.join
+			start_time < end_time
 		end
 end

@@ -1,5 +1,5 @@
 require "rails_helper"
-
+include AASM
 RSpec.describe MissionsController do
   describe "GET index" do
     let(:user) { create(:user) }

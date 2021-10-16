@@ -1,5 +1,5 @@
 <div class="col-md-12">
-  <h1 class='text-center'>Welcome home</h1>
+  <h1 class='text-center'><%= t('Mission list') %></h1>
   <div class="mission d-flex">
     <%= link_to "#{t("New mission")}", new_mission_path, class: "btn btn-primary ms-auto" %>
   </div>
@@ -8,6 +8,8 @@
       <tr>
         <td scope="col"> <%= t("Title") %> </td>
         <td scope="col"> <%= t("Content") %> </td>
+        <td scope="col"> <%= t("Start_time") %> </td>
+        <td scope="col"> <%= t("End_time") %> </td>
       </tr>
     </thead>
     <tbody>

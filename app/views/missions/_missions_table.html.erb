@@ -5,6 +5,8 @@
 		<%= mission.created_at %>
 	</td>
 	<td><%= mission.content %></td>
+	<td><%= mission.start_time %></td>
+	<td><%= mission.end_time %></td>
 	<td>
 		<%= link_to "#{t("Edit")}", edit_mission_path(mission), class: "btn btn-xs" %>
 		<%= link_to "#{t("Delete")}", mission_path(mission), class: "btn btn-xs", method: 'delete', data: { confirm: "Are you sure?" }  %>
