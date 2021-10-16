@@ -1,9 +1,17 @@
 <div class="col-md-12">
   <%= simple_form_for mission do |f| %>
-    <%= f.input :title %>
-    <%= f.input :content %>
-    <div class="form-actions">
-       <%= f.submit "#{t("Submit")}", :disable_with => 'Submiting...', :class => "btn btn-primary"%>
+    <%= f.input :title, label: "#{t("Title")}" %>
+    <%= f.input :content, label: "#{t("Content")}" %>
+    <%= f.input :start_time, as: :datetime, label: "#{t("Start_time")}", 
+                                            input_html: { value: Time.now }, 
+                                            start_year:  Date.today.year, 
+                                            end_year: Date.today.year + 2 %>
+    <%= f.input :end_time, as: :datetime, label: "#{t("End_time")}",
+                                          input_html: { value: Time.now }, 
+                                          start_year:  Date.today.year, 
+                                          end_year: Date.today.year + 2 %>
+    <div class="form-actions mt-5 d-flex">
+       <%= f.submit "#{t("Submit")}", :disable_with => 'Submiting...', :class => "btn btn-primary ms-auto"%>
     </div>
   <% end %>
 </div>

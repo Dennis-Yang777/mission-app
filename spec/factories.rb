@@ -10,6 +10,8 @@ FactoryBot.define do
   factory :mission do
     title {"Mission Name"}
     content {"Content."}
+    start_time { Time.now }
+    end_time { Time.now + 1.day }
     user
   end
 end

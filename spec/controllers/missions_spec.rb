@@ -94,12 +94,26 @@ RSpec.describe MissionsController do
     context "when mission doesn't have title" do
       it "can't create a new mission record" do
         expect do 
-          post :create, params: { mission: { content: 'do your homework' }}
+          post :create, params: { mission: { content: 'do your homework', start_time: Time.now, end_time: Time.now + 1.day }}
         end.to change { Mission.count }.by(0)
       end
 
       it "render new template" do
-        post :create, params: { mission: { content: 'do your homework' }}
+        post :create, params: { mission: { content: 'do your homework', start_time: Time.now, end_time: Time.now + 1.day }}
+
+        expect(response).to render_template("new")
+      end
+    end
+
+    context "when mission in the wrong time" do
+      it "can't create a new mission record" do
+        expect do 
+          post :create, params: { mission: { title: 'My work',content: 'do your homework', start_time: Time.now, end_time: Time.now - 1.day }}
+        end.to change { Mission.count }.by(0)
+      end
+
+      it "render new template" do
+        post :create, params: { mission: { title: 'My work',content: 'do your homework', start_time: Time.now, end_time: Time.now - 1.day }}
 
         expect(response).to render_template("new")
       end
@@ -148,7 +162,10 @@ RSpec.describe MissionsController do
       
       context "when mission have a title" do
         before do
-          put :update, params: { id: mission.id,  mission: { title: "Eat lunch", content: "I want to eat lunch." }}
+          put :update, params: { id: mission.id,  mission: { title: "Eat lunch",
+                                                             content: "I want to eat lunch.",
+                                                             start_time: Time.now,
+                                                             end_time: Time.now + 1.day }}
         end
   
         it "assign @mission" do
@@ -167,7 +184,31 @@ RSpec.describe MissionsController do
   
       context "when mission have no title" do
         before do
-          put :update, params: { id: mission.id,  mission: { title: "",content: "I want to eat lunch." }}
+          put :update, params: { id: mission.id,  mission: { title: "",
+                                                             content: "I want to eat lunch.",
+                                                             start_time: Time.now,
+                                                             end_time: Time.now + 1.day }}
+        end
+  
+        it "assign @mission" do
+          expect(assigns[:mission]).to eq(mission)
+        end
+    
+        it "changes value" do
+          expect(mission.content).not_to eq("I want to eat lunch.")
+        end
+    
+        it "redirects to mission_path" do
+          expect(response).to render_template("edit")
+        end
+      end
+
+      context "when mission in wrong time" do
+        before do
+          put :update, params: { id: mission.id,  mission: { title: "Eat lunch",
+                                                             content: "I want to eat lunch.",
+                                                             start_time: Time.now,
+                                                             end_time: Time.now - 1.day }}
         end
   
         it "assign @mission" do
