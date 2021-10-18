@@ -46,6 +46,16 @@ class MissionsController < ApplicationController
 		redirect_to missions_path if @mission.destroy
 	end
 
+	def search
+		if params[:search_content]
+			@missions = Mission.where("title LIKE ? OR content LIKE ?", "%#{params[:search_content]}%", "%#{params[:search_content]}%")
+			render :index
+		else
+			@missions = Mission.where(user_id: current_user)
+			render :index
+		end
+	end
+
 	private
 		def mission_params
 			params.require(:mission).permit(:title, :content, :start_time, :end_time)

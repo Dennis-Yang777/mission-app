@@ -1,5 +1,12 @@
 <div class="col-md-12">
   <h1 class='text-center'><%= t('Mission list') %></h1>
+  <div>
+    <%= form_with url: search_missions_path, method: 'GET' do |f| %>
+      查詢標題或內容：
+      <%= search_field_tag :search_content %>
+      <%= f.submit "#{t("Search")}" %>
+    <% end %>
+  </div>
   <div class="mission d-flex">
     <%= link_to "#{t("New mission")}", new_mission_path, class: "btn btn-primary ms-auto" %>
   </div>
@@ -10,6 +17,7 @@
         <td scope="col"> <%= t("Content") %> </td>
         <td scope="col"> <%= t("Start_time") %> </td>
         <td scope="col"> <%= t("End_time") %> </td>
+        <td scope="col"> <%= t("State") %> </td>
       </tr>
     </thead>
     <tbody>
