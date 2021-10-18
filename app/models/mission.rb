@@ -1,0 +1,4 @@
+class Mission < ApplicationRecord
+	validates :title, presence: true
+	belongs_to :user
+end

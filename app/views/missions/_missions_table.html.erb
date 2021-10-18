@@ -1,0 +1,13 @@
+<% missions.each do |mission| %>
+<tr>
+	<td>
+		<%= link_to mission.title, mission_path(mission) %>
+		<%= mission.created_at %>
+	</td>
+	<td><%= mission.content %></td>
+	<td>
+		<%= link_to "#{t("Edit")}", edit_mission_path(mission), class: "btn btn-xs" %>
+		<%= link_to "#{t("Delete")}", mission_path(mission), class: "btn btn-xs", method: 'delete', data: { confirm: "Are you sure?" }  %>
+	</td>
+</tr>
+<% end %>
