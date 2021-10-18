@@ -13,6 +13,7 @@
   <table class="table">
     <thead>
       <tr>
+        <td scope="col"> <%= t("Priority") %> </td>
         <td scope="col"> <%= t("Title") %> </td>
         <td scope="col"> <%= t("Content") %> </td>
         <td scope="col"> <%= t("Start_time") %> </td>
@@ -20,12 +21,9 @@
         <td scope="col">
           <%= t("State") %> 
           <%= form_with url: state_search_missions_path, method: :get do |form| %>
-            <%= form.radio_button :state, "pending" %>
-            <%= form.label :pending, t("pending") %>
-            <%= form.radio_button :state, "running" %>
-            <%= form.label :running, t("running") %>
-            <%= form.radio_button :state, "finished" %>
-            <%= form.label :finished, t("finished") %>
+            <%= form.select :state, [[t("pending"), "pending"], 
+                                     [t("running"), "running"], 
+                                     [t("finished"), "finished"]] %>
             <%= form.submit t("Search") %>
           <% end %>
         </td>

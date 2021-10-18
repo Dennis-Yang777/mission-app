@@ -12,6 +12,7 @@ FactoryBot.define do
     content {"Content."}
     start_time { Time.now }
     end_time { Time.now + 1.day }
+    priority { 1 }
     user
   end
 end

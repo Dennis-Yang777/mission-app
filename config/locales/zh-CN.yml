@@ -11,8 +11,12 @@
   Submit: 送出
   Start_time: 開始時間
   End_time: 結束時間
+  Priority: 優先權
   State: 狀態
   Search: 篩選
   pending: 待處理
   running: 進行中
   finished: 已完成
+  high: 高
+  medium: 中
+  low: 低

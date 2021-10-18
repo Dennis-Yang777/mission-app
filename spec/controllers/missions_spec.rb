@@ -80,7 +80,7 @@ RSpec.describe MissionsController do
       end
 
       it "render new template" do
-        post :create, params: { mission: { content: 'do your homework', start_time: Time.now, end_time: Time.now + 1.day }}
+        post :create, params: { mission: { content: 'do your homework', start_time: Time.now, end_time: Time.now + 1.day,}}
 
         expect(response).to render_template("new")
       end
@@ -89,12 +89,12 @@ RSpec.describe MissionsController do
     context "when mission in the wrong time" do
       it "can't create a new mission record" do
         expect do 
-          post :create, params: { mission: { title: 'My work',content: 'do your homework', start_time: Time.now, end_time: Time.now - 1.day }}
+          post :create, params: { mission: { title: 'My work',content: 'do your homework', start_time: Time.now, end_time: Time.now - 1.day, priority: 'high'}}
         end.to change { Mission.count }.by(0)
       end
 
       it "render new template" do
-        post :create, params: { mission: { title: 'My work',content: 'do your homework', start_time: Time.now, end_time: Time.now - 1.day }}
+        post :create, params: { mission: { title: 'My work',content: 'do your homework', start_time: Time.now, end_time: Time.now - 1.day, priority: 'high'}}
 
         expect(response).to render_template("new")
       end
@@ -158,8 +158,8 @@ RSpec.describe MissionsController do
           expect(assigns[:mission].content).to eq("I want to eat lunch.")
         end
     
-        it "redirects to mission_path" do
-          expect(response).to redirect_to missions_path(mission)
+        it "redirects to missions_path" do
+          expect(response).to redirect_to missions_path
         end
       end
   

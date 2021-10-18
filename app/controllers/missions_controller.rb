@@ -21,7 +21,6 @@ class MissionsController < ApplicationController
 		else
 			render :new, notice: "結束日期比開始日期早，請重新填寫"
 		end
-
 	end
 
 	def edit
@@ -30,7 +29,7 @@ class MissionsController < ApplicationController
 	def update
 		if check_date
 			if @mission.update(mission_params)
-				redirect_to missions_path(@mission), notice: "修改成功"	
+				redirect_to missions_path, notice: "修改成功"	
 			else
 				render :edit, notice: "新增失敗、請確認表單內容填寫是否正確。"
 			end
@@ -75,7 +74,7 @@ class MissionsController < ApplicationController
 
 	private
 		def mission_params
-			params.require(:mission).permit(:title, :content, :start_time, :end_time)
+			params.require(:mission).permit(:title, :content, :start_time, :end_time, :priority)
 		end
 
 		def find_author_mission

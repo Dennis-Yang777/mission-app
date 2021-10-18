@@ -1,5 +1,6 @@
 <% missions.each do |mission| %>
 <tr>
+	<td class='pt-3'><%= priority_statement(mission) %></td>
 	<td class='pt-3'><%= mission.title %></td>
 	<td class='pt-3'><%= mission.content %></td>
 	<td class='pt-3'><%= mission.start_time %></td>
