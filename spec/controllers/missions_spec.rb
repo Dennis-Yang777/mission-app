@@ -4,7 +4,6 @@ RSpec.describe MissionsController do
   describe "GET index" do
     let(:user) { create(:user) }
     let(:mission1) { create(:mission, user: user) }
-    let(:mission2) { create(:mission, user: user) }
     
     before do
       sign_in user 
@@ -12,29 +11,11 @@ RSpec.describe MissionsController do
     end
 
     it "asign @missions" do
-      expect(assigns(:missions)).to eq([mission1, mission2]) 
+      expect(assigns(:missions)).to eq([mission1]) 
     end
 
     it "render template" do
       expect(response).to render_template("index")
-    end
-  end
-
-  describe "GET show" do
-    let(:user) { create(:user) }
-    let(:mission) { create(:mission, user: user) }
-    
-    before do
-      sign_in user
-      get :show, params: { id: mission.id }
-    end
-
-    it "assigns @mission" do
-      expect(assigns(:mission)).to eq(mission)
-    end
-
-    it "render template" do
-      expect(response).to render_template("show")
     end
   end
 

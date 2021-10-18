@@ -1,10 +1,10 @@
 <div class="col-md-12">
   <h1 class='text-center'><%= t('Mission list') %></h1>
   <div>
-    <%= form_with url: search_missions_path, method: 'GET' do |f| %>
+    <%= form_with url: search_missions_path, method: :get do |form| %>
       查詢標題或內容：
-      <%= search_field_tag :search_content %>
-      <%= f.submit "#{t("Search")}" %>
+      <%= form.search_field :keyword %>
+      <%= form.submit t("Search") %>
     <% end %>
   </div>
   <div class="mission d-flex">
@@ -17,7 +17,18 @@
         <td scope="col"> <%= t("Content") %> </td>
         <td scope="col"> <%= t("Start_time") %> </td>
         <td scope="col"> <%= t("End_time") %> </td>
-        <td scope="col"> <%= t("State") %> </td>
+        <td scope="col">
+          <%= t("State") %> 
+          <%= form_with url: state_search_missions_path, method: :get do |form| %>
+            <%= form.radio_button :state, "pending" %>
+            <%= form.label :pending, t("pending") %>
+            <%= form.radio_button :state, "running" %>
+            <%= form.label :running, t("running") %>
+            <%= form.radio_button :state, "finished" %>
+            <%= form.label :finished, t("finished") %>
+            <%= form.submit t("Search") %>
+          <% end %>
+        </td>
       </tr>
     </thead>
     <tbody>

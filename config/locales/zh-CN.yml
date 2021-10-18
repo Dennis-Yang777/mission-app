@@ -13,3 +13,6 @@
   End_time: 結束時間
   State: 狀態
   Search: 篩選
+  pending: 待處理
+  running: 進行中
+  finished: 已完成

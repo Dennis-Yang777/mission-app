@@ -1,12 +1,9 @@
 class MissionsController < ApplicationController
 	before_action :authenticate_user!
-	before_action :find_author_mission, only: %i[show edit update destroy]
+	before_action :find_author_mission, only: %i[edit update destroy change_state]
 
 	def index
-		@missions = Mission.where(user_id: current_user)
-	end
-
-	def show
+		@missions = Mission.user_missions(current_user).desc
 	end
 
 	def new
@@ -47,13 +44,33 @@ class MissionsController < ApplicationController
 	end
 
 	def search
-		if params[:search_content]
-			@missions = Mission.where("title LIKE ? OR content LIKE ?", "%#{params[:search_content]}%", "%#{params[:search_content]}%")
+		if params[:keyword]
+			@missions = Mission.where("title LIKE ? OR content LIKE ?", "%#{params[:keyword]}%", "%#{params[:keyword]}%").desc
 			render :index
 		else
-			@missions = Mission.where(user_id: current_user)
+			@missions = Mission.user_missions(current_user).desc
 			render :index
 		end
+	end
+
+	def state_search
+		if params[:state]
+			@missions = Mission.where(state: params[:state]).desc
+			render :index
+		else
+			@missions = Mission.user_missions(current_user).desc
+			render :index
+		end
+	end
+
+	def change_state
+		case @mission.state
+			when "pending"
+				@mission.run!
+			when "running"
+				@mission.finish!
+		end
+		redirect_to missions_path, notice: '任務狀態更新成功'
 	end
 
 	private

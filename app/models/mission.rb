@@ -4,6 +4,9 @@ class Mission < ApplicationRecord
 	validates :end_time, presence: true
 	belongs_to :user
 
+  scope :desc, -> { order(start_time: :desc) }
+  scope :user_missions, -> (user) { where(user_id: user) }
+
 	include AASM
   aasm column: 'state' do
     state :pending, initial: true

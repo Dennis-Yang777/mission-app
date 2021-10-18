@@ -1,13 +1,14 @@
 <% missions.each do |mission| %>
 <tr>
-	<td><%= link_to mission.title, mission_path(mission) %></td>
-	<td><%= mission.content %></td>
-	<td><%= mission.start_time %></td>
-	<td><%= mission.end_time %></td>
-	<td><%= mission.state %></td>
+	<td class='pt-3'><%= mission.title %></td>
+	<td class='pt-3'><%= mission.content %></td>
+	<td class='pt-3'><%= mission.start_time %></td>
+	<td class='pt-3'><%= mission.end_time %></td>
+	<td class='pt-3'><%= t(mission.state) %></td>
 	<td>
 		<%= link_to "#{t("Edit")}", edit_mission_path(mission), class: "btn btn-xs" %>
 		<%= link_to "#{t("Delete")}", mission_path(mission), class: "btn btn-xs", method: 'delete', data: { confirm: "Are you sure?" }  %>
+		<%= go_to_change_state(mission) %>
 	</td>
 </tr>
 <% end %>
