@@ -31,6 +31,8 @@ gem 'react-rails', '~> 2.6', '>= 2.6.1'
 gem 'rexml', '~> 3.2', '>= 3.2.5'
 gem 'devise', '~> 4.8'
 gem 'simple_form', '~> 5.1'
+gem 'rails-i18n', '~> 6.0'
+gem 'aasm', '~> 5.2'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
