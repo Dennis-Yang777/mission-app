@@ -3,6 +3,8 @@ rvm:
   - 3.0.2
 install:
   - bundle install
+  - nvm install 10
+  - npm i -g yarn
   - yarn
 services:
   - postgresql
