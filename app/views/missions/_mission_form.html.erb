@@ -1,6 +1,6 @@
 <div class="col-md-12">
   <%= simple_form_for mission do |f| %>
-    <%= f.input :title, label: "#{t("Title")}" %>
+    <%= f.input :title, label: "#{t("Title")}", error: '標題為必填' %>
     <%= f.input :content, label: "#{t("Content")}" %>
     <%= f.input :start_time, as: :datetime, label: "#{t("Start_time")}", 
                                             start_year:  Date.today.year, 
@@ -8,8 +8,14 @@
     <%= f.input :end_time, as: :datetime, label: "#{t("End_time")}",
                                           start_year:  Date.today.year, 
                                           end_year: Date.today.year + 2 %>
+    <% if mission.errors[:time_error].any? %>
+      <% mission.errors[:time_error].each do |error| %>
+        <p class='text-danger'><%= error %></p>
+      <% end %>
+    <% end %>
     <%= f.input :priority, as: :select, label: "#{t("Priority")}",
-                                        collection: priority_state_collection %>
+                                        collection: priority_state_collection,
+                                        error: '優先權為必填' %>
     <div class="form-actions mt-5 d-flex">
        <%= f.submit "#{t("Submit")}", :disable_with => 'Submiting...', :class => "btn btn-primary ms-auto"%>
     </div>

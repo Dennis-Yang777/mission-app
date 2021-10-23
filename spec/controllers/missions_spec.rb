@@ -146,7 +146,8 @@ RSpec.describe MissionsController do
           put :update, params: { id: mission.id,  mission: { title: "Eat lunch",
                                                              content: "I want to eat lunch.",
                                                              start_time: Time.now,
-                                                             end_time: Time.now + 1.day }}
+                                                             end_time: Time.now + 1.day,
+                                                             priority: 'high' }}
         end
   
         it "assign @mission" do
@@ -168,7 +169,8 @@ RSpec.describe MissionsController do
           put :update, params: { id: mission.id,  mission: { title: "",
                                                              content: "I want to eat lunch.",
                                                              start_time: Time.now,
-                                                             end_time: Time.now + 1.day }}
+                                                             end_time: Time.now + 1.day,
+                                                             priority: 'high' }}
         end
   
         it "assign @mission" do
@@ -188,8 +190,9 @@ RSpec.describe MissionsController do
         before do
           put :update, params: { id: mission.id,  mission: { title: "Eat lunch",
                                                              content: "I want to eat lunch.",
-                                                             start_time: Time.now,
-                                                             end_time: Time.now - 1.day }}
+                                                             start_time: Time.now, 
+                                                             end_time: Time.now - 1.day, 
+                                                             priority: 'high' }}
         end
   
         it "assign @mission" do

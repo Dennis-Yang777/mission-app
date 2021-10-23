@@ -1,8 +1,6 @@
 class Mission < ApplicationRecord
-	validates :title, presence: true
-	validates :start_time, presence: true
-	validates :end_time, presence: true
-	validates :priority, presence: true
+	validates :title, :priority, :start_time, :end_time, presence: true
+  validate :check_date, on: [:create, :update]
 	belongs_to :user
 
   scope :desc, -> { order(start_time: :desc) }
@@ -26,4 +24,11 @@ class Mission < ApplicationRecord
       transitions from: :running, to: :pending
     end
   end
+
+  private
+    def check_date
+      if self.start_time >= self.end_time
+        errors.add(:time_error, "開始時間不可大於結束時間")
+      end
+    end
 end
