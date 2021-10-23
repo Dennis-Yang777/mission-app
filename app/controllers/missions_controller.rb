@@ -54,6 +54,16 @@ class MissionsController < ApplicationController
 		end
 	end
 
+	def priority_search
+		if params[:priority] == '2'
+			@missions = Mission.order(priority: :desc)
+			render :index
+		elsif params[:priority] == '0'
+			@missions = Mission.order(:priority)
+			render :index
+		end
+	end
+
 	def change_state
 		case @mission.state
 			when "pending"

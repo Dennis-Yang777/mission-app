@@ -13,7 +13,13 @@
   <table class="table">
     <thead>
       <tr>
-        <td scope="col"> <%= t("Priority") %> </td>
+        <td scope="col" id='priority'>
+          <%= t("Priority") %> 
+          <%= form_with url: priority_search_missions_path, method: :get do |form| %>
+            <%= form.select :priority, [[t("high"), 2], [t("low"), 0]] %>
+            <%= form.submit t("Search") %>
+          <% end %>
+        </td>
         <td scope="col"> <%= t("Title") %> </td>
         <td scope="col"> <%= t("Content") %> </td>
         <td scope="col"> <%= t("Start_time") %> </td>
