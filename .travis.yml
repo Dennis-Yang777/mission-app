@@ -1,13 +1,28 @@
+addons:
+  chrome: stable
 language: ruby
 rvm:
   - 3.0.2
-install:
-  - bundle install
-  - nvm install 10
-  - npm i -g yarn
-  - yarn
+cache:
+  # - bundler
+  # - /home/travis/.rvm/
+  bundler: true
+  yarn: true
+  directories:
+    - node_modules
+
 services:
   - postgresql
+
+before_script:
+  - bundle install
+  - nvm install node
+  - node -v
+  - npm i -g yarn
+  - yarn install
+  - cp config/database.travis.yml config/database.yml
+  - bundle exec rake db:create
+
 script:
   - bundle exec rake db:migrate:reset RAILS_ENV=test
   - bundle exec rspec
